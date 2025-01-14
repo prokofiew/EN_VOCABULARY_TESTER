@@ -1,0 +1,25 @@
+{
+    "configurations": [
+      {
+        "type": "debugpy",
+        "request": "launch",
+        "name": "Launch Program",
+        "program": "${workspaceFolder}/${input:programName}"
+      }
+    ],
+    "inputs": [
+      {
+        "type": "pickString",
+        "id": "programName",
+        "description": "Select the Python file to launch",
+        "options": [
+          "main.py",
+          "Controller.py",
+          "menu_interface.py",
+          "menu.py",
+          "test_interface.py",
+          "test.py"
+        ]
+      }
+    ]
+  }
