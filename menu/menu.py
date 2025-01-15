@@ -15,7 +15,7 @@ class Menu(MenuInterface):
         self.options = {}
         self.controller = controller
         self.parent_menu = parent_menu
-        self._initialize_menu_options()
+        self.__initialize_menu_options()
 
     @staticmethod
     def clear_console():
@@ -24,7 +24,7 @@ class Menu(MenuInterface):
         else:
             os.system("clear")
 
-    def _initialize_menu_options(self):
+    def __initialize_menu_options(self):
         # private method to initialize Main menu
         if self.title == "Main menu":
             self.add_option(1, MenuOption(
@@ -69,13 +69,13 @@ class Menu(MenuInterface):
             choice = input("\nSelect an option: ").strip()
             if choice.isdigit() and int(choice) in self.options:
                 return int(choice)
-            self._display_error_message("Invalid option!\n\nPlease try again.")
+            self.__display_error_message("Invalid option!\n\nPlease try again.")
             return None
         except ValueError:
-            self._display_error_message("Please enter a valid number.")
+            self.__display_error_message("Please enter a valid number.")
             return None
 
-    def _display_error_message(self, message):
+    def __display_error_message(self, message):
         """ Displaying error message,
         clearing console and returning to menu. """
         self.clear_console()
