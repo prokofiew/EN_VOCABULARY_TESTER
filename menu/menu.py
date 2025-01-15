@@ -46,6 +46,8 @@ class Menu(MenuInterface):
         self.clear_console()
         print(f"\n==== {self.title} ====")
         for key, option in self.options.items():
+            if key == "confirm_selection":
+                continue
             print(f"{key}. {option.label}")
 
         choice = self.select_option()
