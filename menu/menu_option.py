@@ -1,3 +1,8 @@
+"""
+class represents a single option within a menu
+"""
+
+
 class MenuOption:
     def __init__(self, label, action=None, submenu=None):
         self.label = label
@@ -5,6 +10,8 @@ class MenuOption:
         self.submenu = submenu
 
     def execute(self, *args):
+        """ method is called when the user
+        selects menu option or displaying submenu"""
         if self.action:
             if args:
                 self.action(*args)
