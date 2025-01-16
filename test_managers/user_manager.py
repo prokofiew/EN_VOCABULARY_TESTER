@@ -27,16 +27,23 @@ class UserManager:
     @staticmethod
     def validate_user_input(user_input):
         """Validate input for dictionary words"""
+        messages = {
+            1: "Input cannot be empty.",
+            2: "Input cannot be a space.",
+            3: "Input must contain more than one character.",
+            4: f"{Fore.YELLOW}Are you sure you want to enter a number?"
+               f" (y/n): {Fore.RESET}",
+            5: "This cannot be a number.",
+        }
+
         if user_input == "":
-            raise ValueError("Input cannot be empty.")
+            raise ValueError(messages[1])
         elif user_input.isspace():
-            raise ValueError("Input cannot be a space.")
+            raise ValueError(messages[2])
         elif len(user_input) == 1:
-            raise ValueError(
-                "Input must contain more than one character.")
+            raise ValueError(messages[3])
         elif user_input.isnumeric():
-            decision = input(
-                "Are you sure you want to enter a number? (y/n): ")
+            decision = input(messages[4])
             if decision.lower() == "n":
-                raise ValueError("This cannot be a number.")
+                raise ValueError(messages[5])
         return True
