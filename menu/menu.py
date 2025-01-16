@@ -69,7 +69,8 @@ class Menu(MenuInterface):
             choice = input("\nSelect an option: ").strip()
             if choice.isdigit() and int(choice) in self.options:
                 return int(choice)
-            self.__display_error_message("Invalid option!\n\nPlease try again.")
+            self.__display_error_message(
+                "Invalid option!\n\nPlease try again.")
             return None
         except ValueError:
             self.__display_error_message("Please enter a valid number.")
