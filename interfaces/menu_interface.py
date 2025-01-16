@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+# Menu iterface with abstract methods
+
 
 class MenuInterface(ABC):
     @abstractmethod
