@@ -9,15 +9,27 @@ class TextFormatter:
     @staticmethod
     def normalize_text(text):
         """
-        Removing diacritics, converting to lowercase, and stripping whitespace
+        Removes diacritics, converts to lowercase, and strips whitespace.
         """
         if not isinstance(text, str):
             return text
-        text = text.strip()  # Remove leading and trailing whitespace
-        normalized_text = unicodedata.normalize("NFD", text)
-        return "".join(
-            c for c in normalized_text if unicodedata.category(c) != "Mn"
-        ).replace('ł', 'l').lower()
+
+        # Remove leading and trailing whitespace
+        stripped_text = text.strip()
+
+        # Normalize text to decompose diacritic characters
+        normalized_text = unicodedata.normalize("NFD", stripped_text)
+
+        # Remove diacritic marks
+        without_diacritics = "".join(
+            char for char in normalized_text
+            if unicodedata.category(char) != "Mn"
+        )
+
+        # Replace specific characters and convert to lowercase
+        final_text = without_diacritics.replace('ł', 'l').lower()
+
+        return final_text
 
     def colorize(self, text, color):
         """
