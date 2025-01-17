@@ -69,10 +69,13 @@ class Menu(MenuInterface):
             choice = input("\nSelect an option: ").strip()
             if ',' in choice:
                 # Parse multiple selections
-                indices = [int(x.strip()) for x in choice.split(',') if x.strip().isdigit()]
+                indices = [
+                    int(x.strip()) for x in choice.split(',')
+                    if x.strip().isdigit()]
                 invalid = [x for x in indices if x not in self.options]
                 if invalid:
-                    self.__display_error_message(f"Invalid option(s): {invalid}")
+                    self.__display_error_message(
+                        f"Invalid option(s): {invalid}")
                     return None
                 return indices
             elif choice.isdigit() and int(choice) in self.options:
