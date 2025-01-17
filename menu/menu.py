@@ -67,10 +67,17 @@ class Menu(MenuInterface):
     def select_option(self):
         try:
             choice = input("\nSelect an option: ").strip()
-            if choice.isdigit() and int(choice) in self.options:
+            if ',' in choice:
+                # Parse multiple selections
+                indices = [int(x.strip()) for x in choice.split(',') if x.strip().isdigit()]
+                invalid = [x for x in indices if x not in self.options]
+                if invalid:
+                    self.__display_error_message(f"Invalid option(s): {invalid}")
+                    return None
+                return indices
+            elif choice.isdigit() and int(choice) in self.options:
                 return int(choice)
-            self.__display_error_message(
-                "Invalid option!\n\nPlease try again.")
+            self.__display_error_message("Invalid option! Please try again.")
             return None
         except ValueError:
             self.__display_error_message("Please enter a valid number.")

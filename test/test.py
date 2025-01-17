@@ -69,8 +69,7 @@ class NewTest(Test):
             if len(indices) == 1:
                 self.selected_category = categories[indices[0] - 1][1]
             else:
-                self.selected_category = [
-                    categories[idx - 1][1] for idx in indices]
+                self.selected_category = [categories[idx - 1][1] for idx in indices]
             self.question_manager.set_category(self.selected_category)
             self.__get_questions_amount()
 
