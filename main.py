@@ -1,8 +1,8 @@
-from controllers.app_controller import App_Controller
+from controllers.app_controller import AppController
 
 
 def main():
-    controller = App_Controller()
+    controller = AppController()
     controller.setup_main_menu()  # Setup main menu
     controller.main_menu.display()
 

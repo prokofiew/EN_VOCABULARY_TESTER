@@ -16,7 +16,7 @@ TEST_DATABASE = os.path.join("test_database", "tester_database.xlsx")
 # responsible for execution of main menu actions
 
 
-class App_Controller:
+class AppController:
     def __init__(self):
         self.data = None
         self.dictionaries = None

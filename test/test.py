@@ -208,11 +208,12 @@ class NewTest(Test):
         return user_answers, False
 
     def get_results(self, correct_answers, user_answers, expressions):
-        """ gets questions, correct answers and user answers into a DataFrame,
-        normalizes text,
+        """ gets questions, correct answers
+        and user answers into a DataFrame, normalizes text,
         compares test data and points wrong and correct answers,
         modifies DataFrame to display text information (map),
         calculates points and percentage"""
+
         test_data = pd.DataFrame({
             "Questions": expressions,
             "Correct answers": correct_answers,
