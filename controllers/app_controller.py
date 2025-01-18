@@ -104,8 +104,8 @@ class AppController:
 
     def exit_program(self):
         Menu.clear_console()
-        message = "Thanks for using.\
-            You have successfully exited the program.\n"
+        message = "Thanks for using. "\
+                  "You have successfully exited the program.\n"
         print(self.text_formatter.colorize(message, Fore.CYAN))
         sys.exit()
 
