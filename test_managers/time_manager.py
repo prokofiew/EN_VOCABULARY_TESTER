@@ -17,7 +17,7 @@ class TimeManager:
             start_time = datetime.datetime.now()
             result = func(instance, *args, **kwargs)
             end_time = datetime.datetime.now()
-            instance._test_duration = (end_time - start_time).total_seconds()
+            instance.set_test_duration((end_time - start_time).total_seconds())
             return result
         return wrapper
 

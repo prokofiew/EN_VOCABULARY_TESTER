@@ -10,33 +10,36 @@ class FileManager:
         self.text_formatter = TextFormatter()
 
     def results_to_file(self, test_instance):
+        point_score = test_instance.get_point_score()
+        percentage_score = test_instance.get_percentage_score()
+        test_datetime = test.instance.get_test_datetime()
         # Convert list of categories to a comma-separated string
         category_str = (
-            ', '.join(test_instance._NewTest__selected_category)
-            if isinstance(test_instance._NewTest__selected_category, list)
-            else test_instance._NewTest__selected_category)
+            ', '.join(test_instance._selected_category)
+            if isinstance(test_instance._selected_category, list)
+            else test_instance._selected_category)
 
         # Create a DataFrame for the test results
         results_df = pd.DataFrame({
             "test_id": [1],
-            "user_name": [test_instance._NewTest_user_name],
+            "user_name": [test_instance._user_name],
             "test_date_time": [
-                f"{test_instance._NewTest__test_datetime.strftime('%d-%m-%Y')}"
-                f"{test_instance._NewTest__test_datetime.strftime('%H:%M:%S')}"
+                f"{test_datetime.strftime('%d-%m-%Y')}"
+                f"{test_datetime.strftime('%H:%M:%S')}"
             ],
             "test_version": [
                 "EN->PL"
-                if test_instance._NewTest__test_language_version == "EN"
+                if test_instance._test_language_version == "EN"
                 else "PL->EN"],
             "test_time_limit_sek": [
-                test_instance._NewTest__test_time_limit_in_seconds],
-            "test_duration_sek": [f"{test_instance.test_duration:.2f}"],
+                test_instance._test_time_limit_in_seconds],
+            "test_duration_sek": [f"{test_instance._test_duration:.2f}"],
             "test_result_points": [
-                f"({test_instance._NewTest__point_score}/"
-                f"{test_instance._NewTest__get_questions_amount})"
+                f"({point_score}/"
+                f"{test_instance._questions_amount})"
             ],
             "test_result_percentage": [
-                f"{test_instance._NewTest__percentage_score:.2f}%"],
+                f"{percentage_score:.2f}%"],
             "category": [category_str]})
 
         # Check if the file exists

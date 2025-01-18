@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-# Menu iterface with abstract methods
+# Menu interface with abstract methods
 
 
 class MenuInterface(ABC):

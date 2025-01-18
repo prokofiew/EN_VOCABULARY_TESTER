@@ -1,5 +1,4 @@
 import datetime
-import pandas as pd
 
 from colorama import Fore
 from interfaces.test_interface import Test
@@ -15,17 +14,19 @@ from test_managers.user_manager import UserManager
 
 class NewTest(Test):
     def __init__(self, data_file, data, main_menu):
-        self._data_file = data_file  # path of excel file for saivng results
+        self._data_file = data_file  # path of Excel file for saving results
         self._user_name = None
-        self._test_time_limit_in_seconds = None
-        self._test_duration = None
+        self._test_time_limit_in_seconds = 0
+        self._test_language_version = None
+        self._selected_category = None
+        self._test_duration = 0
+        self._questions_amount = 0
         self.__main_menu = main_menu  # allowing user to use main menu
         self.__data = data  # Data from database as DataFrame
-        self.__test_language_version = None
-        self.__selected_category = None
         self.__test_datetime = self.set_test_datetime()
         self.__point_score = 0
         self.__percentage_score = 0
+        self.__result_manager = ResultManager(self)
         self.__text_formatter = TextFormatter()
         self.__question_manager = QuestionManager(data, self.__text_formatter)
         self.__time_manager = TimeManager()
@@ -38,7 +39,8 @@ class NewTest(Test):
     def get_test_datetime(self):
         return self.__test_datetime
 
-    def set_test_datetime(self):
+    @staticmethod
+    def set_test_datetime():
         return datetime.datetime.now()
 
     def get_point_score(self):
@@ -53,16 +55,22 @@ class NewTest(Test):
     def set_percentage_score(self, percentage_data):
         self.__percentage_score = percentage_data
 
+    def get_test_duration(self):
+        return self._test_duration
+
+    def set_test_duration(self, duration):
+        self._test_duration = duration
+
     def __initiate_language_menu(self):
         """ initiates language menu,
-        if the language is choosen,
+        if the language is chosen,
         directs user to category setup"""
         def choose_en():
-            self.__test_language_version = "EN"
+            self._test_language_version = "EN"
             self.__set_category()
 
         def choose_pl():
-            self.__test_language_version = "PL"
+            self._test_language_version = "PL"
             self.__set_category()
 
         def back_to_main():
@@ -81,21 +89,21 @@ class NewTest(Test):
 
     def __initiate_category_menu(self):
         """ initiates category menu,
-        if the category is choosen,
+        if the category is chosen,
         directs user to question amount setup"""
         def choose_categories(*indices):
             if len(indices) == 1:
-                self.__selected_category = categories[indices[0] - 1][1]
+                self._selected_category = categories[indices[0] - 1][1]
             else:
-                self.__selected_category = [
+                self._selected_category = [
                     categories[idx - 1][1] for idx in indices]
-            self.__question_manager.set_category(self.__selected_category)
-            self.__get_questions_amount()
+            self.__question_manager.set_category(self._selected_category)
+            self.set_questions_amount()
 
         def choose_all():
-            self.__selected_category = "All categories"
-            self.__question_manager.set_category(self.__selected_category)
-            self.__get_questions_amount()
+            self._selected_category = "All categories"
+            self.__question_manager.set_category(self._selected_category)
+            self.set_questions_amount()
 
         def back_to_language():
             self.__set_language()
@@ -140,7 +148,7 @@ class NewTest(Test):
                 "Confirm Selection", action=choose_categories))
 
     def __initiate_test(self):
-        """ initiating test by getting and settin usernme,
+        """ initiating test by getting and setting username,
         redirecting to language setup """
         print("\nStarting new test...\n")
         self.__user_manager.set_user_name()
@@ -153,10 +161,13 @@ class NewTest(Test):
     def __set_category(self):
         self.category_menu.display()
 
-    def __get_questions_amount(self):
-        """ Gets and sets question amount from the user"""
-        self.questions_amount = self.__question_manager.set_questions_amount()
+    def set_questions_amount(self):
+        self._questions_amount = self.__question_manager.set_questions_amount()
         self.__set_test_time_limit()
+
+    def get_questions_amount(self):
+        """ Gets question amount"""
+        return self._questions_amount
 
     def __set_test_time_limit(self):
         """ Sets time limit for the test """
@@ -168,26 +179,26 @@ class NewTest(Test):
     def get_questions_and_answers_data(self):
         """ Based on category choice creates data for questions and answers"""
         return self.__question_manager.get_questions_and_answers(
-            self.__test_language_version)
+            self._test_language_version)
 
     def start_test(self):
         """ Starts the actual test,
         displays summary of users choices,
-        displays importnt information about test"""
+        displays important information about test"""
 
-        if self.__test_language_version and self.__selected_category:
+        if self._test_language_version and self._selected_category:
             Menu.clear_console()
-            print(f"Starting test.\nChoosen options:\n"
-                  f"1. Translating from: {self.__test_language_version}.\n"
+            print(f"Starting test.\nChosen options:\n"
+                  f"1. Translating from: {self._test_language_version}.\n"
                   f"2. Category: "
-                  f"{self.__selected_category if isinstance(
-                      self.__selected_category, str) else ', '.join(
-                          map(str, self.__selected_category))}.\n"
-                  f"3. Number of questions: {self.questions_amount}.\n"
+                  f"{self._selected_category if isinstance(
+                      self._selected_category, str) else ', '.join(
+                          map(str, self._selected_category))}.\n"
+                  f"3. Number of questions: {self._questions_amount}.\n"
                   f"4. Test time limit: "
                   f"{self._test_time_limit_in_seconds // 60} min.\n")
 
-            if self.__test_language_version == "EN":
+            if self._test_language_version == "EN":
                 message = "*** You can enter answers with or without polish " \
                           "letters. Text will be normalized. ***\n"
                 print(self.__text_formatter.colorize(message, Fore.GREEN))
@@ -205,8 +216,8 @@ class NewTest(Test):
 
     @TimeManager.measure_time  # TimeManager decorator to measure test time
     def submit_answer(self, questions_data):
-        """ responsible for displaing questions and gathering answers,
-        checking if test was stoped"""
+        """ responsible for displaying questions and gathering answers,
+        checking if test was stopped"""
         user_answers = []
         print(self.__text_formatter.colorize(
             "*** To stop test, enter: \"Stop test\" ***\n",
@@ -226,38 +237,7 @@ class NewTest(Test):
         return user_answers, False
 
     def get_results(self, correct_answers, user_answers, expressions):
-        """ gets questions, correct answers
-        and user answers into a DataFrame, normalizes text,
-        compares test data and points wrong and correct answers,
-        modifies DataFrame to display text information (map),
-        calculates points and percentage"""
-
-        test_data = pd.DataFrame({
-            "Questions": expressions,
-            "Correct answers": correct_answers,
-            "Your answers": user_answers,
-        })
-
-        # Normalize text
-        test_data["Normalized Correct"] = test_data[
-            "Correct answers"].apply(TextFormatter.normalize_text)
-        test_data["Normalized User"] = test_data[
-            "Your answers"].apply(TextFormatter.normalize_text)
-
-        # Comparing data
-        test_data["Correct/Wrong"] = test_data[
-            "Normalized Correct"] == test_data["Normalized User"]
-        test_data["Points"] = test_data["Correct/Wrong"].astype(int)
-
-        # Map to text
-        test_data["Correct/Wrong"] = test_data[
-            "Correct/Wrong"].map({True: "Correct", False: "Wrong"})
-
-        # Calculating the results
-        self.set_percentage_score(test_data["Points"].mean() * 100)
-        self.set_point_score(test_data["Points"].sum())
-
-        return test_data
+        return self.__result_manager.analyze_answers(correct_answers, user_answers, expressions)
 
     def save_results(self):
         save_decision = input("Do you want to save the results? (y/n): ")
@@ -267,15 +247,12 @@ class NewTest(Test):
             print("Results not saved")
 
     def end_test(self, test_data):
-        """ passing data to result manger """
-        result_manager = ResultManager(self)
-
         Menu.clear_console()
         # display summary table
-        result_manager.display_results_table(test_data)
+        self.__result_manager.display_results_table(test_data)
 
         # display test data like points ect.
-        result_manager.display_test_outcome()
+        self.__result_manager.display_test_outcome()
 
         self.save_results()
 
