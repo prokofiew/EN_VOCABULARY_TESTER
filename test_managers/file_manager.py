@@ -12,7 +12,7 @@ class FileManager:
     def results_to_file(self, test_instance):
         point_score = test_instance.get_point_score()
         percentage_score = test_instance.get_percentage_score()
-        test_datetime = test.instance.get_test_datetime()
+        test_datetime = test_instance.get_test_datetime()
         # Convert list of categories to a comma-separated string
         category_str = (
             ', '.join(test_instance._selected_category)
