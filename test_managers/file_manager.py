@@ -19,7 +19,7 @@ class FileManager:
         # Create a DataFrame for the test results
         results_df = pd.DataFrame({
             "test_id": [1],
-            "user_name": [test_instance._NewTest__user_name],
+            "user_name": [test_instance._NewTest_user_name],
             "test_date_time": [
                 f"{test_instance._NewTest__test_datetime.strftime('%d-%m-%Y')}"
                 f"{test_instance._NewTest__test_datetime.strftime('%H:%M:%S')}"
@@ -40,14 +40,14 @@ class FileManager:
             "category": [category_str]})
 
         # Check if the file exists
-        if os.path.exists(test_instance.data_file):
+        if os.path.exists(test_instance._data_file):
             with pd.ExcelWriter(
-                test_instance.data_file, mode='a', engine='openpyxl',
+                test_instance._data_file, mode='a', engine='openpyxl',
                 if_sheet_exists='overlay'
             ) as writer:
                 if "test results" in writer.book.sheetnames:
                     existing_data = pd.read_excel(
-                        test_instance.data_file, sheet_name="test results")
+                        test_instance._data_file, sheet_name="test results")
                     next_test_id = (existing_data["test_id"].max() + 1
                                     if 'test_id' in existing_data.columns
                                     else 1)
@@ -62,7 +62,7 @@ class FileManager:
                                         index=False)
         else:
             with pd.ExcelWriter(
-                test_instance.data_file, engine='openpyxl'
+                test_instance._data_file, engine='openpyxl'
             ) as writer:
                 results_df.to_excel(writer,
                                     sheet_name="test results",
