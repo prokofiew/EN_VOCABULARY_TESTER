@@ -17,14 +17,14 @@ class TimeManager:
             start_time = datetime.datetime.now()
             result = func(instance, *args, **kwargs)
             end_time = datetime.datetime.now()
-            instance.test_duration = (end_time - start_time).total_seconds()
+            instance._test_duration = (end_time - start_time).total_seconds()
             return result
         return wrapper
 
     @staticmethod
     def test_delay():
         print("The test will start in: ")
-        for i in range(5, 0, -1):
+        for i in range(1, 0, -1):
             print(f"\r{i} ", end="")
             time.sleep(1)
         print("\rStart!\n")

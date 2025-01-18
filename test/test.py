@@ -15,18 +15,17 @@ from test_managers.user_manager import UserManager
 
 class NewTest(Test):
     def __init__(self, data_file, data, main_menu):
-
-        self.test_duration = None
-        self.data_file = data_file  # path of excel file for saivng results
+        self._data_file = data_file  # path of excel file for saivng results
+        self._user_name = None
+        self._test_time_limit_in_seconds = None
+        self._test_duration = None
         self.__main_menu = main_menu  # allowing user to use main menu
         self.__data = data  # Data from database as DataFrame
         self.__test_language_version = None
         self.__selected_category = None
-        self.__test_datetime = datetime.datetime.now()
+        self.__test_datetime = self.set_test_datetime()
         self.__point_score = 0
         self.__percentage_score = 0
-        self.__user_name = None
-        self.__test_time_limit_in_seconds = None
         self.__text_formatter = TextFormatter()
         self.__question_manager = QuestionManager(data, self.__text_formatter)
         self.__time_manager = TimeManager()
@@ -35,6 +34,24 @@ class NewTest(Test):
         self.__initiate_language_menu()
         self.__initiate_category_menu()
         self.__initiate_test()
+
+    def get_test_datetime(self):
+        return self.__test_datetime
+
+    def set_test_datetime(self):
+        return datetime.datetime.now()
+
+    def get_point_score(self):
+        return self.__point_score
+
+    def set_point_score(self, points_data):
+        self.__point_score = points_data
+
+    def get_percentage_score(self):
+        return self.__percentage_score
+
+    def set_percentage_score(self, percentage_data):
+        self.__percentage_score = percentage_data
 
     def __initiate_language_menu(self):
         """ initiates language menu,
@@ -127,7 +144,7 @@ class NewTest(Test):
         redirecting to language setup """
         print("\nStarting new test...\n")
         self.__user_manager.set_user_name()
-        self.__user_name = self.__user_manager.get_user_name()
+        self._user_name = self.__user_manager.get_user_name()
         self.__set_language()
 
     def __set_language(self):
@@ -144,7 +161,7 @@ class NewTest(Test):
     def __set_test_time_limit(self):
         """ Sets time limit for the test """
         if self.__time_manager.set_test_time_limit():
-            self.__test_time_limit_in_seconds = \
+            self._test_time_limit_in_seconds = \
                 self.__time_manager.get_test_time_limit()
             self.start_test()
 
@@ -168,7 +185,7 @@ class NewTest(Test):
                           map(str, self.__selected_category))}.\n"
                   f"3. Number of questions: {self.questions_amount}.\n"
                   f"4. Test time limit: "
-                  f"{self.__test_time_limit_in_seconds // 60} min.\n")
+                  f"{self._test_time_limit_in_seconds // 60} min.\n")
 
             if self.__test_language_version == "EN":
                 message = "*** You can enter answers with or without polish " \
@@ -237,8 +254,8 @@ class NewTest(Test):
             "Correct/Wrong"].map({True: "Correct", False: "Wrong"})
 
         # Calculating the results
-        self.__percentage_score = test_data["Points"].mean() * 100
-        self.__point_score = test_data["Points"].sum()
+        self.set_percentage_score(test_data["Points"].mean() * 100)
+        self.set_point_score(test_data["Points"].sum())
 
         return test_data
 
@@ -251,16 +268,7 @@ class NewTest(Test):
 
     def end_test(self, test_data):
         """ passing data to result manger """
-        result_manager = ResultManager(
-            self.__test_datetime,
-            self.__user_name,
-            self.__point_score,
-            self.questions_amount,
-            self.__percentage_score,
-            self.test_duration,
-            self.__test_time_limit_in_seconds,
-            test_data
-        )
+        result_manager = ResultManager(self)
 
         Menu.clear_console()
         # display summary table

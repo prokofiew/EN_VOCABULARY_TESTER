@@ -3,24 +3,16 @@ from colorama import Fore
 
 
 class ResultManager:
-    def __init__(self, test_datetime, user_name, point_score, questions_amount,
-                 percentage_score, test_duration,
-                 test_time_limit_in_seconds, test_data):
-        self.__test_datetime = test_datetime
-        self.__user_name = user_name
-        self.__point_score = point_score
-        self.__questions_amount = questions_amount
-        self.__percentage_score = percentage_score
-        self.__test_duration = test_duration
-        self.__test_time_limit_in_seconds = test_time_limit_in_seconds
-        self.__test_data = test_data
+    def __init__(self, test_instance):
         self.__text_formatter = TextFormatter()
+        self.test_instance = test_instance
 
     def __format_test_duration(self):
-        minutes, seconds = divmod(self.__test_duration, 60)
+        minutes, seconds = divmod(self.test_instance._test_duration, 60)
         return f"{int(minutes)} min {int(seconds)} sec"
 
     def __determine_test_outcome(self):
+        percentage_score = self.test_instance.get_percentage_score()
         messages = {
             1: "Test failed. Time limit exceeded!",
             2: "Test failed. Practice more!",
@@ -29,14 +21,15 @@ class ResultManager:
             5: "Test passed. Excellent result!",
         }
 
-        if self.__test_duration > self.__test_time_limit_in_seconds:
+        if (self.test_instance._test_duration
+                > self.test_instance._test_time_limit_in_seconds):
             print(self.__text_formatter.colorize(messages[1], Fore.RED))
         else:
-            if self.__percentage_score < 50:
+            if percentage_score < 50:
                 print(self.__text_formatter.colorize(messages[2], Fore.RED))
-            elif self.__percentage_score < 75:
+            elif self.test_instance._percentage_score < 75:
                 print(self.__text_formatter.colorize(messages[3], Fore.CYAN))
-            elif self.__percentage_score < 85:
+            elif self.test_instance._percentage_score < 85:
                 print(self.__text_formatter.colorize(messages[4], Fore.GREEN))
             else:
                 print(self.__text_formatter.colorize(messages[5], Fore.GREEN))
@@ -113,13 +106,16 @@ class ResultManager:
         print()
 
     def display_test_outcome(self):
-        print(f"Test date: {self.__test_datetime.strftime('%d-%m-%Y')}")
-        print(f"Test time: {self.__test_datetime.strftime('%H:%M:%S')}")
-        print(f"User: {self.__user_name}")
-        print(f"Points: {self.__point_score}/{self.__questions_amount}")
-        print(f"Percentage: {self.__percentage_score:.2f}%")
+        test_date_time = self.test_instance.get_test_datetime()
+        points_score = self.test_instance.get_point_score()
+        percentage_score = self.test_instance.get_percentage_score()
+        print(f"Test date: {test_date_time.strftime('%d-%m-%Y')}")
+        print(f"Test time: {test_date_time.strftime('%H:%M:%S')}")
+        print(f"User: {self.test_instance._user_name}")
+        print(f"Points: {points_score}/{self.test_instance.questions_amount}")
+        print(f"Percentage: {percentage_score:.2f}%")
         test_duration_str = self.__format_test_duration()
         print(f"Test time limit: {
-            self.__test_time_limit_in_seconds // 60} min.")
+            self.test_instance._test_time_limit_in_seconds // 60} min.")
         print(f"Your time is: {test_duration_str}\n")
         self.__determine_test_outcome()
