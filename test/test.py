@@ -14,8 +14,10 @@ from test_managers.user_manager import UserManager
 
 
 class NewTest(Test):
-    def __init__(self, data, main_menu):
+    def __init__(self, data_file, data, main_menu):
+
         self.test_duration = None
+        self.data_file = data_file  # path of excel file for saivng results
         self.__main_menu = main_menu  # allowing user to use main menu
         self.__data = data  # Data from database as DataFrame
         self.__test_language_version = None
