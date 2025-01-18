@@ -69,8 +69,8 @@ class ResultManager:
         for _, row in __test_data.iterrows():
             correct_wrong_color = (Fore.GREEN if row[
                 "Correct/Wrong"] == "Correct" else Fore.RED)
-            zero_one_color = (Fore.GREEN if row[
-                "Points"] == True else Fore.RED)
+            points_color = (Fore.GREEN if row[
+                "Points"] is True else Fore.RED)
 
             row_data = [
                 str(row['Questions']),
@@ -79,7 +79,7 @@ class ResultManager:
                 str(row['Correct/Wrong']),
                 str(row['Points'])]
 
-            row_colors = [None, None, None, correct_wrong_color, zero_one_color]
+            row_colors = [None, None, None, correct_wrong_color, points_color]
             formatted_row = self.__text_formatter.format_table_row(
                 row_data,
                 [col_widths['Questions'],
