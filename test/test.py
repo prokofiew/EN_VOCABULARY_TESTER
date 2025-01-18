@@ -226,9 +226,10 @@ class NewTest(Test):
         checking if test was stopped"""
         user_answers = []
 
-        for expression in questions_data:
+        for idx, expression in enumerate(questions_data):
+            print(f"Question no.{idx + 1}")
             answer = input(
-                f"Enter translation of: \"{expression}\".\n")
+                f"Enter translation of: \"{expression}\".\nAnswer -> ")
             if answer.lower() == "stop test":
                 return user_answers, True
             else:
