@@ -117,6 +117,7 @@ class ResultManager:
         print(f"Points: {self.__point_score}/{self.__questions_amount}")
         print(f"Percentage: {self.__percentage_score:.2f}%")
         test_duration_str = self.__format_test_duration()
-        print(f"Test time limit: {self.__test_time_limit_in_seconds // 60} min.")
+        print(f"Test time limit: {
+            self.__test_time_limit_in_seconds // 60} min.")
         print(f"Your time is: {test_duration_str}\n")
         self.__determine_test_outcome()

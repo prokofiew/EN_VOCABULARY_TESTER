@@ -30,7 +30,7 @@ class AppController:
         self.main_menu = Menu("Main menu", self)
 
     def start_test(self):
-        NewTest(TEST_DATABASE, self.data, self.main_menu)
+        NewTest(self.data, self.main_menu)
 
     def add_dictionary(self):
         """ Adding new category of vocabulary. """
