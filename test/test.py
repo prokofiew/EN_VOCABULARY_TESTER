@@ -61,6 +61,10 @@ class NewTest(Test):
     def set_test_duration(self, duration):
         self._test_duration = duration
 
+    def get_questions_amount(self):
+        """ Gets question amount"""
+        return self._questions_amount
+
     def __initiate_language_menu(self):
         """ initiates language menu,
         if the language is chosen,
@@ -165,10 +169,6 @@ class NewTest(Test):
         self._questions_amount = self.__question_manager.set_questions_amount()
         self.__set_test_time_limit()
 
-    def get_questions_amount(self):
-        """ Gets question amount"""
-        return self._questions_amount
-
     def __set_test_time_limit(self):
         """ Sets time limit for the test """
         if self.__time_manager.set_test_time_limit():
@@ -203,11 +203,17 @@ class NewTest(Test):
                           "letters. Text will be normalized. ***\n"
                 print(self.__text_formatter.colorize(message, Fore.GREEN))
 
+            print(self.__text_formatter.colorize(
+                "*** To stop test, enter: \"Stop test\" ***\n",
+                Fore.LIGHTYELLOW_EX))
+
             questions, answers = self.get_questions_and_answers_data()
+            TimeManager.test_delay()
             user_answers, test_stopped = self.submit_answer(questions)
 
             if test_stopped:
-                print("Test stopped. No Results available")
+                message = "Test stopped. No Results available"
+                print(self.__text_formatter.colorize(message, Fore.YELLOW))
                 TimeManager.display_sleep(2)
                 return self.__main_menu.display()
 
@@ -219,11 +225,6 @@ class NewTest(Test):
         """ responsible for displaying questions and gathering answers,
         checking if test was stopped"""
         user_answers = []
-        print(self.__text_formatter.colorize(
-            "*** To stop test, enter: \"Stop test\" ***\n",
-              Fore.LIGHTYELLOW_EX))
-
-        TimeManager.test_delay()
 
         for expression in questions_data:
             answer = input(
@@ -237,7 +238,8 @@ class NewTest(Test):
         return user_answers, False
 
     def get_results(self, correct_answers, user_answers, expressions):
-        return self.__result_manager.analyze_answers(correct_answers, user_answers, expressions)
+        return self.__result_manager.analyze_answers(
+            correct_answers, user_answers, expressions)
 
     def save_results(self):
         save_decision = input("Do you want to save the results? (y/n): ")
