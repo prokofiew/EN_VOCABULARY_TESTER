@@ -62,7 +62,6 @@ class NewTest(Test):
         self._test_duration = duration
 
     def get_questions_amount(self):
-        """ Gets question amount"""
         return self._questions_amount
 
     def __initiate_language_menu(self):
