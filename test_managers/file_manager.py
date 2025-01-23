@@ -24,7 +24,7 @@ class FileManager:
             "test_id": [1],
             "user_name": [test_instance._user_name],
             "test_date_time": [
-                f"{test_datetime.strftime('%d-%m-%Y')}"
+                f"{test_datetime.strftime('%d-%m-%Y')} "
                 f"{test_datetime.strftime('%H:%M:%S')}"
             ],
             "test_version": [
