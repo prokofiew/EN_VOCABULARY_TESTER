@@ -8,7 +8,6 @@ from test_managers.text_formatter import TextFormatter
 class TimeManager:
     def __init__(self):
         self.test_time_limit_in_seconds = None
-        self.text_formatter = TextFormatter()
 
     @staticmethod
     def measure_time(func):
@@ -40,7 +39,7 @@ class TimeManager:
             return True
         except ValueError:
             message = "Invalid value. Enter a number"
-            print(self.text_formatter.colorize(message, Fore.RED))
+            print(TextFormatter.colorize(message, Fore.RED))
             self.display_sleep(1.5)
             return self.set_test_time_limit()
 
