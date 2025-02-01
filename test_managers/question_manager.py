@@ -2,11 +2,12 @@ import random
 import time
 from colorama import Fore
 
+from test_managers.text_formatter import TextFormatter
+
 
 class QuestionManager:
-    def __init__(self, data, text_formatter):
+    def __init__(self, data):
         self.data = data
-        self.text_formatter = text_formatter
         self.questions_amount = 0
         self.selected_category = None
 
@@ -24,7 +25,7 @@ class QuestionManager:
                     "Warning, requested number of questions exceeds "
                     "available questions. Adjusting maximum available -> "
                     f"{available_questions}")
-                print(f"{self.text_formatter.colorize(message, Fore.YELLOW)}")
+                print(f"{TextFormatter.colorize(message, Fore.YELLOW)}")
                 self.questions_amount = available_questions
             else:
                 self.questions_amount = questions_amount
@@ -33,7 +34,7 @@ class QuestionManager:
 
         except ValueError:
             message = "Invalid value. Enter a number"
-            print(self.text_formatter.colorize(message, Fore.RED))
+            print(TextFormatter.colorize(message, Fore.RED))
             time.sleep(1.8)
             return self.set_questions_amount()
 

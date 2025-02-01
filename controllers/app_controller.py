@@ -58,8 +58,7 @@ class AppController:
                     "PL": [new_word_pl],
                     "category": [category_id],
                 })
-                self.vocabulary = self.__join_data_frames(
-                    self.vocabulary, new_word)
+                self.vocabulary = self.join_data_frames(self.vocabulary, new_word)
                 words_added = True
 
                 if input(
@@ -139,7 +138,7 @@ class AppController:
         return user_input
 
     @staticmethod
-    def __join_data_frames(base_data_frame, added_data_frame):
+    def join_data_frames(base_data_frame, added_data_frame):
         """ Private method to join DataFrames with pd.concat """
         return pd.concat([
             base_data_frame, added_data_frame], ignore_index=True)
@@ -188,8 +187,7 @@ class AppController:
         """ Updates category property,
         updates database file,
         reloads the database file """
-        self.dictionaries = self.__join_data_frames(
-            self.dictionaries, new_category_df)
+        self.dictionaries = self.join_data_frames(self.dictionaries, new_category_df)
         self.__save_to_database(self.dictionaries, "categories")
         self.__data_load()
 

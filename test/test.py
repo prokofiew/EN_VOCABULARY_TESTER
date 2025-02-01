@@ -1,12 +1,12 @@
 import datetime
 
-from colorama import Fore
 from interfaces.test_interface import Test
 from menu.menu import Menu
 from menu.menu_option import MenuOption
-from test_managers.text_formatter import TextFormatter
+from colorama import Fore
 from test_managers.question_manager import QuestionManager
 from test_managers.result_manager import ResultManager
+from test_managers.text_formatter import TextFormatter
 from test_managers.time_manager import TimeManager
 from test_managers.file_manager import FileManager
 from test_managers.user_manager import UserManager
@@ -27,8 +27,7 @@ class NewTest(Test):
         self.__point_score = 0
         self.__percentage_score = 0
         self.__result_manager = ResultManager(self)
-        self.__text_formatter = TextFormatter()
-        self.__question_manager = QuestionManager(data, self.__text_formatter)
+        self.__question_manager = QuestionManager(data)
         self.__time_manager = TimeManager()
         self.__file_manager = FileManager()
         self.__user_manager = UserManager()
@@ -200,9 +199,9 @@ class NewTest(Test):
             if self._test_language_version == "EN":
                 message = "*** You can enter answers with or without polish " \
                           "letters. Text will be normalized. ***\n"
-                print(self.__text_formatter.colorize(message, Fore.GREEN))
+                print(TextFormatter.colorize(message, Fore.GREEN))
 
-            print(self.__text_formatter.colorize(
+            print(TextFormatter.colorize(
                 "*** To stop test, enter: \"Stop test\" ***\n",
                 Fore.LIGHTYELLOW_EX))
 
@@ -212,7 +211,7 @@ class NewTest(Test):
 
             if test_stopped:
                 message = "Test stopped. No Results available"
-                print(self.__text_formatter.colorize(message, Fore.YELLOW))
+                print(TextFormatter.colorize(message, Fore.YELLOW))
                 TimeManager.display_sleep(2)
                 return self.__main_menu.display()
 
@@ -238,10 +237,12 @@ class NewTest(Test):
         return user_answers, False
 
     def get_results(self, correct_answers, user_answers, expressions):
+        """ Analyzes answers and to get results"""
         return self.__result_manager.analyze_answers(
             correct_answers, user_answers, expressions)
 
     def save_results(self):
+        """ Saves results to Excel file """
         save_decision = input("Do you want to save the results? (y/n): ")
         if save_decision.lower() == "y":
             self.__file_manager.results_to_file(self)
@@ -249,6 +250,11 @@ class NewTest(Test):
             print("Results not saved")
 
     def end_test(self, test_data):
+        """
+       Displays results of the test as table and summary,
+       gives option to the user to save results to Excel file
+       and return to main menu.
+        """
         Menu.clear_console()
         # display summary table
         self.__result_manager.display_results_table(test_data)
@@ -258,5 +264,5 @@ class NewTest(Test):
 
         self.save_results()
 
-        input("\nPress 'ENTER' to return to main menu")
+        input("\nPress Enter to return to the previous menu...")
         self.__main_menu.display()
