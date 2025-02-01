@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from menu.menu_option import MenuOption
+
+
 # Menu interface with abstract methods
 
 
@@ -13,7 +16,7 @@ class MenuInterface(ABC):
         pass
 
     @abstractmethod
-    def add_option(self):
+    def add_option(self, key, option: MenuOption):
         pass
 
     @abstractmethod

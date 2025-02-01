@@ -5,7 +5,7 @@ from interfaces.menu_interface import MenuInterface
 from menu.menu_option import MenuOption
 
 # Class responsible for initialization end display of Main menu.
-# Implements menu_inteface and its methods
+# Implements menu_interface and its methods
 # Provides static method to clear console
 
 
@@ -19,6 +19,7 @@ class Menu(MenuInterface):
 
     @staticmethod
     def clear_console():
+        """ Static method to clear console"""
         if os.name == "nt":
             os.system("cls")
         else:
