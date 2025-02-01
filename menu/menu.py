@@ -66,6 +66,7 @@ class Menu(MenuInterface):
             self.display()
 
     def select_option(self):
+        """ Select option from user input"""
         try:
             choice = input("\nSelect an option: ").strip()
             if ',' in choice:
@@ -73,12 +74,16 @@ class Menu(MenuInterface):
                 indices = [
                     int(x.strip()) for x in choice.split(',')
                     if x.strip().isdigit()]
+
+                # validation if option is not in menu
                 invalid = [x for x in indices if x not in self.options]
                 if invalid:
                     self.__display_error_message(
                         f"Invalid option(s): {invalid}")
                     return None
                 return indices
+
+            # if there is return choice
             elif choice.isdigit() and int(choice) in self.options:
                 return int(choice)
             self.__display_error_message("Invalid option! Please try again.")
@@ -96,5 +101,6 @@ class Menu(MenuInterface):
         self.display()
 
     def back_to_prev_menu(self):
-        if self.parent_menu:
+        """ Return to previous menu """
+        if self.parent_menu: # Reference to parent menu item
             self.parent_menu.display()
