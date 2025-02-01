@@ -6,7 +6,6 @@ from menu.menu import Menu
 
 class UserManager:
     def __init__(self):
-        self.text_formatter = TextFormatter()
         self.user_name = None
 
     def get_user_name(self):
@@ -19,7 +18,7 @@ class UserManager:
                 self.user_name = user_name
         except ValueError as error:
             message = f"ERROR! {error} "
-            print(self.text_formatter.colorize(message, Fore.RED))
+            print(TextFormatter.colorize(message, Fore.RED))
             TimeManager.display_sleep(1.8)
             Menu.clear_console()
             self.set_user_name()
