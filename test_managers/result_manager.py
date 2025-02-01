@@ -6,7 +6,6 @@ from colorama import Fore
 
 class ResultManager:
     def __init__(self, test_instance):
-        # self.__text_formatter = TextFormatter()
         self.test_instance = test_instance
 
     def __format_test_duration(self):
