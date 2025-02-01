@@ -23,7 +23,6 @@ class AppController:
         self.vocabulary = None
         self.main_menu = None
         self.user_manager = UserManager()
-        self.text_formatter = TextFormatter()
         self.__data_load()
 
     def initialize_main_menu(self):
@@ -68,7 +67,7 @@ class AppController:
 
             except ValueError as error:
                 message = f"An error occurred: {error}"
-                print(self.text_formatter.colorize(message, Fore.RED))
+                print(TextFormatter.colorize(message, Fore.RED))
                 if input("Do you want to try again? (y/n): ").lower() == "n":
                     break
 
@@ -107,7 +106,7 @@ class AppController:
         Menu.clear_console()
         message = "Thanks for using. "\
                   "You have successfully exited the program.\n"
-        print(self.text_formatter.colorize(message, Fore.CYAN))
+        print(TextFormatter.colorize(message, Fore.CYAN))
         sys.exit()
 
     def __data_load(self):
@@ -180,7 +179,7 @@ class AppController:
                 return new_category_id
         except ValueError as error:
             message = f"\nError: {error}"
-            print(self.text_formatter.colorize(message, Fore.RED))
+            print(TextFormatter.colorize(message, Fore.RED))
         return None
 
     def __update_dictionaries(self, new_category_df):
