@@ -46,7 +46,8 @@ class TextFormatter:
         padding = (total_width - len(text)) // 2
         return f"{fill_char * padding} {text} {fill_char * padding}"
 
-    def format_table_row(self, row_data, col_widths, row_colors=None):
+    @staticmethod
+    def format_table_row(row_data, col_widths, row_colors=None):
         """
         Formats a single table row based on column widths and optional colors.
         """
@@ -60,6 +61,7 @@ class TextFormatter:
             color = None
             if row_colors and i < len(row_colors):
                 color = row_colors[i]
-            formatted_cells.append(self.colorize(formatted_cell, color))
+            formatted_cells.append(
+                TextFormatter.colorize(formatted_cell, color))
 
         return " ".join(formatted_cells)

@@ -6,7 +6,7 @@ from colorama import Fore
 
 class ResultManager:
     def __init__(self, test_instance):
-        self.__text_formatter = TextFormatter()
+        # self.__text_formatter = TextFormatter()
         self.test_instance = test_instance
 
     def __format_test_duration(self):
@@ -40,7 +40,7 @@ class ResultManager:
 
     def __display_table_headers(self, headers, col_widths):
         # Displaying the table header
-        header_str = self.__text_formatter.format_table_row(
+        header_str = TextFormatter.format_table_row(
             headers,
             [col_widths['Questions'], col_widths['Your answers'],
              col_widths['Correct answers'], col_widths['Correct/Wrong'],
@@ -78,7 +78,7 @@ class ResultManager:
                 str(row['Points'])]
 
             row_colors = [None, None, None, correct_wrong_color, points_color]
-            formatted_row = self.__text_formatter.format_table_row(
+            formatted_row = TextFormatter.format_table_row(
                 row_data,
                 [col_widths['Questions'],
                  col_widths['Your answers'],
