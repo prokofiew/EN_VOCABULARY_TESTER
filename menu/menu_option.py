@@ -11,7 +11,8 @@ class MenuOption:
 
     def execute(self, *args):
         """ method is called when the user
-        selects menu option or displaying submenu"""
+        selects menu option or displaying submenu.
+        *args for multiple choices in category menu"""
         if self.action:
             if args:
                 self.action(*args)
