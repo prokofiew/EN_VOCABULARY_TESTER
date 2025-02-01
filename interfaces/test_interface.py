@@ -1,7 +1,7 @@
 from abc import ABC
 from abc import abstractmethod
 
-# Test iterface with abstract methods
+# Test interface with abstract methods
 
 
 class Test(ABC):
