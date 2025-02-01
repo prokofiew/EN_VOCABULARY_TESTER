@@ -14,6 +14,7 @@ class QuestionManager:
         self.selected_category = category
 
     def set_questions_amount(self):
+        """ Let user choose number of questions in test"""
         try:
             questions_amount = int(input("Enter number of questions: "))
             available_questions = self.__get_available_questions_count()
@@ -37,6 +38,7 @@ class QuestionManager:
             return self.set_questions_amount()
 
     def __get_available_questions_count(self):
+        """ Check if there are enough questions in selected category"""
         if self.selected_category == "All categories":
             return len(self.data)
         else:
@@ -50,6 +52,7 @@ class QuestionManager:
             )
 
     def get_questions_and_answers(self, test_language_version):
+        """ Prepare questions and answers for test from filtered data"""
         filtered_data = self.__filter_data()
 
         questions_data = filtered_data[test_language_version].tolist()
@@ -65,6 +68,7 @@ class QuestionManager:
         return questions_data, correct_answers
 
     def __filter_data(self):
+        """" Filter data by selected category"""
         if self.selected_category == "All categories":
             return self.data
         elif isinstance(self.selected_category, list):
