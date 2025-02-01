@@ -31,13 +31,15 @@ class TextFormatter:
 
         return final_text
 
-    def colorize(self, text, color):
+    @staticmethod
+    def colorize(text, color):
         """
         Applies the specified color to the text.
         """
         return f"{color}{text}{Style.RESET_ALL}" if color else text
 
-    def center_text(self, text, total_width, fill_char="="):
+    @staticmethod
+    def center_text(text, total_width, fill_char="="):
         """
         Centers the text within a given width using a specified fill character.
         """
