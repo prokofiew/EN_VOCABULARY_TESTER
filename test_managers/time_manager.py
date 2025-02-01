@@ -23,7 +23,7 @@ class TimeManager:
     @staticmethod
     def test_delay():
         print("The test will start in: ")
-        for i in range(1, 0, -1):
+        for i in range(5, 0, -1):
             print(f"\r{i} ", end="")
             time.sleep(1)
         print("\rStart!\n")
