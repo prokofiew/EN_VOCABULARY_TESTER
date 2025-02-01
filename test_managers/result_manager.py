@@ -90,7 +90,7 @@ class ResultManager:
 
     def __display_summary(self, total_width):
         summary_text = TextFormatter.colorize(
-            self.__text_formatter.center_text(
+            TextFormatter.center_text(
                 "SUMMARY", total_width, "="), Fore.CYAN)
         print(summary_text)
 
