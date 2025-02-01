@@ -10,6 +10,9 @@ class QuestionManager:
         self.questions_amount = 0
         self.selected_category = None
 
+    def set_category(self, category):
+        self.selected_category = category
+
     def set_questions_amount(self):
         try:
             questions_amount = int(input("Enter number of questions: "))
@@ -72,6 +75,3 @@ class QuestionManager:
             return self.data[
                 self.data["category_name"] == self.selected_category
             ]
-
-    def set_category(self, category):
-        self.selected_category = category
