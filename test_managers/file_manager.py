@@ -6,9 +6,6 @@ from test_managers.text_formatter import TextFormatter
 
 
 class FileManager:
-    def __init__(self):
-        self.text_formatter = TextFormatter()
-
     def results_to_file(self, test_instance):
         point_score = test_instance.get_point_score()
         percentage_score = test_instance.get_percentage_score()
@@ -71,4 +68,4 @@ class FileManager:
                                     sheet_name="test results",
                                     index=False)
         message = "Results saved successfully"
-        print(self.text_formatter.colorize(message, Fore.YELLOW))
+        print(TextFormatter.colorize(message, Fore.YELLOW))
