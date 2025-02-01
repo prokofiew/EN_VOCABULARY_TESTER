@@ -129,8 +129,8 @@ class NewTest(Test):
             self.category_menu.add_option(
                 category_id,
                 MenuOption(category_name,
-                           action=lambda category_id=category_id:
-                           choose_categories(category_id)))
+                           action=lambda selected_id=category_id:
+                           choose_categories(selected_id)))
 
         # All categories menu option
         self.category_menu.add_option(
