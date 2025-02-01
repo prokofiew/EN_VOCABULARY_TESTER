@@ -47,7 +47,8 @@ class ResultManager:
              col_widths['Points']], [Fore.YELLOW] * len(headers))
         print(header_str)
 
-    def __calculate_column_widths(self, __test_data, headers):
+    @staticmethod
+    def __calculate_column_widths(__test_data, headers):
         col_widths = {
             "Questions": max(__test_data[
                 "Questions"].apply(len).max(), len("Question")),
