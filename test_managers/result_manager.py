@@ -27,16 +27,16 @@ class ResultManager:
 
         if (test_duration
                 > self.test_instance._test_time_limit_in_seconds):
-            print(self.__text_formatter.colorize(messages[1], Fore.RED))
+            print(TextFormatter.colorize(messages[1], Fore.RED))
         else:
             if percentage_score < 50:
-                print(self.__text_formatter.colorize(messages[2], Fore.RED))
+                print(TextFormatter.colorize(messages[2], Fore.RED))
             elif percentage_score < 75:
-                print(self.__text_formatter.colorize(messages[3], Fore.CYAN))
+                print(TextFormatter.colorize(messages[3], Fore.CYAN))
             elif percentage_score < 85:
-                print(self.__text_formatter.colorize(messages[4], Fore.GREEN))
+                print(TextFormatter.colorize(messages[4], Fore.GREEN))
             else:
-                print(self.__text_formatter.colorize(messages[5], Fore.GREEN))
+                print(TextFormatter.colorize(messages[5], Fore.GREEN))
 
     def __display_table_headers(self, headers, col_widths):
         # Displaying the table header
@@ -89,7 +89,7 @@ class ResultManager:
             print(formatted_row)
 
     def __display_summary(self, total_width):
-        summary_text = self.__text_formatter.colorize(
+        summary_text = TextFormatter.colorize(
             self.__text_formatter.center_text(
                 "SUMMARY", total_width, "="), Fore.CYAN)
         print(summary_text)
