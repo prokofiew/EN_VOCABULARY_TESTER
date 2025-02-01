@@ -20,12 +20,13 @@ class AppController:
     def __init__(self):
         self.data = None
         self.dictionaries = None
-        self.vocabluary = None
+        self.vocabulary = None
+        self.main_menu = None
         self.user_manager = UserManager()
         self.text_formatter = TextFormatter()
         self.__data_load()
 
-    def setup_main_menu(self):
+    def initialize_main_menu(self):
         """ initiating Menu """
         self.main_menu = Menu("Main menu", self)
 
@@ -40,25 +41,25 @@ class AppController:
             self.__display_new_category_info(new_category_id)
         self.back_to_prev_menu()
 
-    def add_vocabluary(self, category_id):
+    def add_vocabulary(self, category_id):
         """ Adding new vocabulary to the category,
         setting flag if words were added"""
         words_added = False
         while True:
             Menu.clear_console()
             try:
-                new_word_EN = self.__get_user_input(
+                new_word_en = self.__get_user_input(
                     "Enter new word in English: ")
-                new_word_PL = self.__get_user_input(
+                new_word_pl = self.__get_user_input(
                     "Enter translation in Polish: ")
 
                 new_word = pd.DataFrame({
-                    "EN": [new_word_EN],
-                    "PL": [new_word_PL],
+                    "EN": [new_word_en],
+                    "PL": [new_word_pl],
                     "category": [category_id],
                 })
-                self.vocabluary = self.__join_data_frames(
-                    self.vocabluary, new_word)
+                self.vocabulary = self.__join_data_frames(
+                    self.vocabulary, new_word)
                 words_added = True
 
                 if input(
@@ -73,11 +74,11 @@ class AppController:
                     break
 
         if words_added:
-            self.__save_to_database(self.vocabluary, "vocabluary")
+            self.__save_to_database(self.vocabulary, "vocabulary")
         return words_added
 
     def display_dictionaries(self):
-        """ Displays avaiable categories of vocabulary """
+        """ Displays available categories of vocabulary """
         Menu.clear_console()
         print("Available dictionaries:")
         dictionaries_df = self.dictionaries.set_index("category_id")
@@ -115,9 +116,9 @@ class AppController:
         try:
             file_data = pd.ExcelFile(TEST_DATABASE)
             self.dictionaries = file_data.parse(sheet_name="categories")
-            self.vocabluary = file_data.parse(sheet_name="vocabluary")
+            self.vocabulary = file_data.parse(sheet_name="vocabulary")
             self.data = pd.merge(
-                self.vocabluary,
+                self.vocabulary,
                 self.dictionaries,
                 left_on="category",
                 right_on="category_id")
@@ -171,7 +172,7 @@ class AppController:
 
             new_category_id, category_df = self.__create_new_category(
                 new_category)
-            if self.add_vocabluary(new_category_id):
+            if self.add_vocabulary(new_category_id):
                 self.__update_dictionaries(category_df)
                 return new_category_id
         except ValueError as error:
@@ -182,7 +183,7 @@ class AppController:
     def __update_dictionaries(self, new_category_df):
         """ Updates category property,
         updates database file,
-        reloads the dabatase file """
+        reloads the database file """
         self.dictionaries = self.__join_data_frames(
             self.dictionaries, new_category_df)
         self.__save_to_database(self.dictionaries, "categories")
@@ -192,4 +193,4 @@ class AppController:
         """ Displaying new category DataFrame. """
         Menu.clear_console()
         print("\nNew category added successfully!")
-        print(self.vocabluary[category_id == self.vocabluary["category"]])
+        print(self.vocabulary[category_id == self.vocabulary["category"]])
