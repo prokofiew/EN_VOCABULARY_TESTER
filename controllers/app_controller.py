@@ -100,7 +100,8 @@ class AppController:
         print("===================================")
         self.back_to_prev_menu()
 
-    def back_to_prev_menu(self):
+    @staticmethod
+    def back_to_prev_menu():
         input("\nPress Enter to return to the previous menu...")
 
     def exit_program(self):
@@ -126,7 +127,8 @@ class AppController:
             print("Database file: tester_database.xlsx not found.")
             sys.exit()
 
-    def __validate_user_input(self, user_input):
+    @staticmethod
+    def __validate_user_input(user_input):
         """ Using UserManager to validate user input"""
         return UserManager.validate_user_input(user_input)
 
@@ -136,12 +138,14 @@ class AppController:
         self.__validate_user_input(user_input)
         return user_input
 
-    def __join_data_frames(self, base_data_frame, added_data_frame):
+    @staticmethod
+    def __join_data_frames(base_data_frame, added_data_frame):
         """ Private method to join DataFrames with pd.concat """
         return pd.concat([
             base_data_frame, added_data_frame], ignore_index=True)
 
-    def __save_to_database(self, data_frame, sheet_name):
+    @staticmethod
+    def __save_to_database(data_frame, sheet_name):
         """ Updating database file with new vocabulary"""
         with pd.ExcelWriter(
             TEST_DATABASE, mode="a", if_sheet_exists="overlay"
