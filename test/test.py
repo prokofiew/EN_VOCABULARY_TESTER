@@ -13,7 +13,7 @@ from test_managers.user_manager import UserManager
 
 
 class NewTest(Test):
-    def __init__(self, data_file, data, main_menu):
+    def __init__(self, data_file, data, main_menu, controller):
         self._data_file = data_file  # path of Excel file for saving results
         self._user_name = None
         self._test_time_limit_in_seconds = 0
@@ -26,6 +26,7 @@ class NewTest(Test):
         self.__test_datetime = self.set_test_datetime()
         self.__point_score = 0
         self.__percentage_score = 0
+        self.__controller = controller
         self.__result_manager = ResultManager(self)
         self.__question_manager = QuestionManager(data)
         self.__time_manager = TimeManager()
@@ -62,6 +63,10 @@ class NewTest(Test):
 
     def get_questions_amount(self):
         return self._questions_amount
+
+    def set_questions_amount(self):
+        self._questions_amount = self.__question_manager.set_questions_amount()
+        self.__set_test_time_limit()
 
     def __initiate_language_menu(self):
         """ initiates language menu,
@@ -163,10 +168,6 @@ class NewTest(Test):
     def __set_category(self):
         self.category_menu.display()
 
-    def set_questions_amount(self):
-        self._questions_amount = self.__question_manager.set_questions_amount()
-        self.__set_test_time_limit()
-
     def __set_test_time_limit(self):
         """ Sets time limit for the test """
         if self.__time_manager.set_test_time_limit():
@@ -264,5 +265,5 @@ class NewTest(Test):
 
         self.save_results()
 
-        input("\nPress Enter to return to the previous menu...")
+        self.__controller.back_to_prev_menu()
         self.__main_menu.display()

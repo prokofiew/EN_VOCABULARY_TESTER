@@ -102,5 +102,5 @@ class Menu(MenuInterface):
 
     def back_to_prev_menu(self):
         """ Return to previous menu """
-        if self.parent_menu: # Reference to parent menu item
+        if self.parent_menu:  # Reference to parent menu item
             self.parent_menu.display()

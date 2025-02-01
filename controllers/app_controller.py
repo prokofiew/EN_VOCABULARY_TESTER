@@ -30,7 +30,7 @@ class AppController:
         self.main_menu = Menu("Main menu", self)
 
     def start_test(self):
-        NewTest(TEST_DATABASE, self.data, self.main_menu)
+        NewTest(TEST_DATABASE, self.data, self.main_menu, self)
 
     def add_dictionary(self):
         """ Adding new category of vocabulary. """
@@ -57,7 +57,10 @@ class AppController:
                     "PL": [new_word_pl],
                     "category": [category_id],
                 })
-                self.vocabulary = self.join_data_frames(self.vocabulary, new_word)
+                self.vocabulary = self.join_data_frames(
+                    self.vocabulary,
+                    new_word
+                )
                 words_added = True
 
                 if input(
@@ -186,7 +189,10 @@ class AppController:
         """ Updates category property,
         updates database file,
         reloads the database file """
-        self.dictionaries = self.join_data_frames(self.dictionaries, new_category_df)
+        self.dictionaries = self.join_data_frames(
+            self.dictionaries,
+            new_category_df
+        )
         self.__save_to_database(self.dictionaries, "categories")
         self.__data_load()
 
