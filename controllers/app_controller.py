@@ -47,8 +47,10 @@ class AppController:
         while True:
             Menu.clear_console()
             try:
-                new_word_en = self.get_user_input("Enter new word in English: ")
-                new_word_pl = self.get_user_input("Enter translation in Polish: ")
+                new_word_en = self.get_user_input(
+                    "Enter new word in English: ")
+                new_word_pl = self.get_user_input(
+                    "Enter translation in Polish: ")
 
                 new_word = pd.DataFrame({
                     "EN": [new_word_en],
@@ -153,7 +155,8 @@ class AppController:
         creates new category if vocabulary was added
         """
         try:
-            new_category = self.get_user_input("\nEnter category name: ").capitalize()
+            new_category = self.get_user_input(
+                "\nEnter category name: ").capitalize()
             if new_category in self.dictionaries["category_name"].values:
                 raise ValueError("Category already exists.")
 
@@ -195,7 +198,15 @@ class AppController:
         Menu.clear_console()
         message = "New category added successfully!"
         category_name = category_df["category_name"].values[0]
-        new_vocabulary = self.vocabulary[self.vocabulary["category"] == category_id]
+        new_vocabulary = self.vocabulary[
+            self.vocabulary["category"] == category_id]
+
         print(TextFormatter.colorize(message, Fore.GREEN))
-        print(f"Category name: {TextFormatter.colorize(category_name, Fore.CYAN)}")
-        print(new_vocabulary[["EN", "PL"]].to_string(index=False, justify="center"))
+        print(f"Category name: {TextFormatter.colorize(
+            category_name,
+            Fore.CYAN)}"
+        )
+        print(new_vocabulary[["EN", "PL"]].to_string(
+            index=False,
+            justify="center")
+        )
