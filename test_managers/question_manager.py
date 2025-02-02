@@ -43,6 +43,7 @@ class QuestionManager:
         if self.selected_category == "All categories":
             return len(self.data)
         else:
+            # list of selected categories
             selected_categories = (
                 [self.selected_category]
                 if isinstance(self.selected_category, str)
