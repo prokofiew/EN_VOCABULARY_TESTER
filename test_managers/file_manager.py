@@ -48,10 +48,15 @@ class FileManager:
                 if "test results" in writer.book.sheetnames:
                     existing_data = pd.read_excel(
                         test_instance._data_file, sheet_name="test results")
+
+                    # deteming id for result data
                     next_test_id = (existing_data["test_id"].max() + 1
                                     if 'test_id' in existing_data.columns
                                     else 1)
                     results_df["test_id"] = next_test_id
+
+                    # joining dataframes of existing data and results,
+                    # and saving it
                     updated_data = pd.concat([existing_data, results_df],
                                              ignore_index=True)
                     updated_data.to_excel(writer, sheet_name="test results",

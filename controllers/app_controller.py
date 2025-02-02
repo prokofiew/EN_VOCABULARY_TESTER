@@ -1,6 +1,5 @@
 import sys
 import os
-from pyexpat.errors import messages
 
 import utlis.description as description
 import pandas as pd
@@ -24,7 +23,6 @@ class AppController:
         self.dictionaries = None
         self.vocabulary = None
         self.main_menu = None
-        self.user_manager = UserManager()
         self.__data_load()
 
     def initialize_main_menu(self):
