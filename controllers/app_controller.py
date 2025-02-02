@@ -1,5 +1,7 @@
 import sys
 import os
+from pyexpat.errors import messages
+
 import utlis.description as description
 import pandas as pd
 
@@ -35,9 +37,9 @@ class AppController:
     def add_dictionary(self):
         """ Adding new category of vocabulary. """
         print("Adding a new dictionary...")
-        new_category_id = self.__process_new_category()
+        new_category_id, category_df = self.__process_new_category()
         if new_category_id:
-            self.__display_new_category_info(new_category_id)
+            self.__display_new_category_info(new_category_id, category_df)
         self.back_to_prev_menu()
 
     def add_vocabulary(self, category_id):
@@ -148,19 +150,6 @@ class AppController:
             print("Database file: tester_database.xlsx not found.")
             sys.exit()
 
-
-    def __create_new_category(self, new_category):
-        """ Creating new category_id and
-        DataFrame for new vocabulary"""
-        new_category_id = int(self.dictionaries["category_id"].max() + 1)
-        new_category_data_frame = pd.DataFrame(
-            {
-                "category_id": [new_category_id],
-                "category_name": [new_category]
-            }
-        )
-        return new_category_id, new_category_data_frame
-
     def __process_new_category(self):
         """ Gets category name from user,
         creates new category if vocabulary was added
@@ -174,11 +163,23 @@ class AppController:
                 new_category)
             if self.add_vocabulary(new_category_id):
                 self.__update_dictionaries(category_df)
-                return new_category_id
+                return new_category_id, category_df
         except ValueError as error:
             message = f"\nError: {error}"
             print(TextFormatter.colorize(message, Fore.RED))
         return None
+
+    def __create_new_category(self, new_category):
+        """ Creating new category_id and
+        DataFrame for new vocabulary"""
+        new_category_id = int(self.dictionaries["category_id"].max() + 1)
+        new_category_data_frame = pd.DataFrame(
+            {
+                "category_id": [new_category_id],
+                "category_name": [new_category]
+            }
+        )
+        return new_category_id, new_category_data_frame
 
     def __update_dictionaries(self, new_category_df):
         """ Updates category property,
@@ -191,8 +192,12 @@ class AppController:
         self.save_to_database(self.dictionaries, "categories")
         self.__data_load()
 
-    def __display_new_category_info(self, category_id):
+    def __display_new_category_info(self, category_id, category_df):
         """ Displaying new category DataFrame. """
         Menu.clear_console()
-        print("\nNew category added successfully!")
-        print(self.vocabulary[category_id == self.vocabulary["category"]])
+        message = "New category added successfully!"
+        category_name = category_df["category_name"].values[0]
+        new_vocabulary = self.vocabulary[self.vocabulary["category"] == category_id]
+        print(TextFormatter.colorize(message, Fore.GREEN))
+        print(f"Category name: {TextFormatter.colorize(category_name, Fore.CYAN)}")
+        print(new_vocabulary[["EN", "PL"]].to_string(index=False, justify="center"))
