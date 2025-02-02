@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbbe68d6-738f-47c9-9c02-e2b253fe774b" name="Changes" comment="" />
+    <list default="true" id="dbbe68d6-738f-47c9-9c02-e2b253fe774b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/app_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/app_controller.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,10 +62,22 @@
       <workItem from="1737233703152" duration="7487000" />
       <workItem from="1737761781156" duration="18000" />
       <workItem from="1738424851329" duration="9568000" />
+      <workItem from="1738493168117" duration="630000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

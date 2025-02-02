@@ -47,10 +47,8 @@ class AppController:
         while True:
             Menu.clear_console()
             try:
-                new_word_en = self.__get_user_input(
-                    "Enter new word in English: ")
-                new_word_pl = self.__get_user_input(
-                    "Enter translation in Polish: ")
+                new_word_en = self.get_user_input("Enter new word in English: ")
+                new_word_pl = self.get_user_input("Enter translation in Polish: ")
 
                 new_word = pd.DataFrame({
                     "EN": [new_word_en],
@@ -75,7 +73,7 @@ class AppController:
                     break
 
         if words_added:
-            self.__save_to_database(self.vocabulary, "vocabulary")
+            self.save_to_database(self.vocabulary, "vocabulary")
         return words_added
 
     def display_dictionaries(self):
@@ -105,12 +103,34 @@ class AppController:
     def back_to_prev_menu():
         input("\nPress Enter to return to the previous menu...")
 
-    def exit_program(self):
+    @staticmethod
+    def exit_program():
         Menu.clear_console()
         message = "Thanks for using. "\
                   "You have successfully exited the program.\n"
         print(TextFormatter.colorize(message, Fore.CYAN))
         sys.exit()
+
+    @staticmethod
+    def get_user_input(prompt):
+        """ getter for user input """
+        user_input = input(prompt).lower()
+        UserManager.validate_user_input(user_input)
+        return user_input
+
+    @staticmethod
+    def join_data_frames(base_data_frame, added_data_frame):
+        """ Private method to join DataFrames with pd.concat """
+        return pd.concat([
+            base_data_frame, added_data_frame], ignore_index=True)
+
+    @staticmethod
+    def save_to_database(data_frame, sheet_name):
+        """ Updating database file with new vocabulary"""
+        with pd.ExcelWriter(
+            TEST_DATABASE, mode="a", if_sheet_exists="overlay"
+        ) as writer:
+            data_frame.to_excel(writer, sheet_name=sheet_name, index=False)
 
     def __data_load(self):
         """ Loads database file
@@ -128,30 +148,6 @@ class AppController:
             print("Database file: tester_database.xlsx not found.")
             sys.exit()
 
-    @staticmethod
-    def __validate_user_input(user_input):
-        """ Using UserManager to validate user input"""
-        return UserManager.validate_user_input(user_input)
-
-    def __get_user_input(self, prompt):
-        """ getter for user input """
-        user_input = input(prompt).lower()
-        self.__validate_user_input(user_input)
-        return user_input
-
-    @staticmethod
-    def join_data_frames(base_data_frame, added_data_frame):
-        """ Private method to join DataFrames with pd.concat """
-        return pd.concat([
-            base_data_frame, added_data_frame], ignore_index=True)
-
-    @staticmethod
-    def __save_to_database(data_frame, sheet_name):
-        """ Updating database file with new vocabulary"""
-        with pd.ExcelWriter(
-            TEST_DATABASE, mode="a", if_sheet_exists="overlay"
-        ) as writer:
-            data_frame.to_excel(writer, sheet_name=sheet_name, index=False)
 
     def __create_new_category(self, new_category):
         """ Creating new category_id and
@@ -170,8 +166,7 @@ class AppController:
         creates new category if vocabulary was added
         """
         try:
-            new_category = self.__get_user_input(
-                "\nEnter category name: ").capitalize()
+            new_category = self.get_user_input("\nEnter category name: ").capitalize()
             if new_category in self.dictionaries["category_name"].values:
                 raise ValueError("Category already exists.")
 
@@ -193,7 +188,7 @@ class AppController:
             self.dictionaries,
             new_category_df
         )
-        self.__save_to_database(self.dictionaries, "categories")
+        self.save_to_database(self.dictionaries, "categories")
         self.__data_load()
 
     def __display_new_category_info(self, category_id):
